@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'; // Add this import
 import 'package:photo_dashboard_matuca/api/backend_api.dart';
 import 'package:photo_dashboard_matuca/locator.dart';
 import 'package:photo_dashboard_matuca/providers/auth_provider.dart';
 import 'package:photo_dashboard_matuca/providers/categories_provider.dart';
 import 'package:photo_dashboard_matuca/providers/side_menu_provider.dart';
 import 'package:photo_dashboard_matuca/router/router.dart';
-import 'package:photo_dashboard_matuca/services/local_storage.dart';
+import 'package:photo_dashboard_matuca/services/local_storage.dart'
+    as app_storage;
 import 'package:photo_dashboard_matuca/services/navigation_service.dart';
 import 'package:photo_dashboard_matuca/services/notifications_service.dart';
 import 'package:photo_dashboard_matuca/ui/layouts/auth/auth_layout.dart';
@@ -14,7 +16,13 @@ import 'package:photo_dashboard_matuca/ui/layouts/splash_layout/splash_layout.da
 import 'package:provider/provider.dart';
 
 void main() async {
-  await LocalStorage.configurePrefs();
+  WidgetsFlutterBinding.ensureInitialized(); // Add this line
+  await Supabase.initialize(
+    url: 'https://kemqphzqgrkcpqpqazoi.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtlbXFwaHpxZ3JrY3BxcHFhem9pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcxMjkwODgsImV4cCI6MjA0MjcwNTA4OH0.XiIZga3v7J8us2yCu5-Ckkd9oiMT7T_6ZcAbIF4mIHY',
+  );
+  await app_storage.LocalStorage.configurePrefs();
   BackendApi.configureDio();
   setUp();
   Flurorouter.configureRoutes();
